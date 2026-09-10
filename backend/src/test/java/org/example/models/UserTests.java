@@ -1,37 +1,57 @@
 package org.example.models;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// Testing Model User methods
-@SpringBootTest
-@ActiveProfiles("test") // Activates application-test.properties
+// Testing User model class methods
+@DisplayName("User model unit tests")
 class UserTests {
 
-   User testUser;
+   private User testUser;
+
+   @BeforeEach
+   void setUpTestUser() {
+      testUser = new User("user 1", "password");
+   }
 
    @Test
-   @DisplayName("MODEL TEST: Getting username")
+   @DisplayName("Getting username")
    void testGetUsername() {
-      assertEquals("user 1", testUser.getPassword(), "Not user 1");
+      assertEquals("user 1", testUser.getUsername(), "Not user 1");
    }
 
    @Test
-   @DisplayName("MODEL TEST: Setting username")
-   void setUsername() {
+   @DisplayName("Username does not exist")
+   void testWrongUsername() {
+      assertNotEquals("user 2", testUser.getUsername(), "Not user 1");
+   }
+
+   @ParameterizedTest
+   @ValueSource(strings = { "admin", "user 1", "user 14" })
+   @DisplayName("Setting username")
+   void testSetUsername(String candidateUsername) {
+      testUser.setUsername(candidateUsername);
+      assertEquals(candidateUsername, testUser.getUsername(), "Failed to update username to: " + candidateUsername);
    }
 
    @Test
-   @DisplayName("MODEL TEST: Getting password")
+   @DisplayName("Getting password")
    void getPassword() {
+      assertEquals("password", testUser.getPassword(), "Not password");
    }
 
    @Test
-   @DisplayName("MODEL TEST: Setting username")
+   @DisplayName("Setting password")
    void setPassword() {
+      testUser.setPassword("notApassword");
+      // verify password was changed
+      assertEquals("notApassword", testUser.getPassword(), "Password should be 'notApassword'");
+      // Verify password is not still the old password
+      assertNotEquals("password", testUser.getPassword(), "Password should not be 'passwprd'");
    }
 }

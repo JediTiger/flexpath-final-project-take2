@@ -14,7 +14,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`username`)
 );
 
--- 2nd: Roles table (Depends on users)
+-- 2nd: Roles table (Derived from users)
 CREATE TABLE `roles` (
   `username` varchar(255) NOT NULL,
   `role` varchar(250) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `roles` (
   CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
 );
 
--- 3rd: Vehicles table
+-- 3rd: Vehicles table (tied to user)
 CREATE TABLE `vehicles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `vehicles` (
   PRIMARY KEY (`id`)
 );
 
--- 4th: Service Records table
+-- 4th: Service Records table (tied to vehicles)
 CREATE TABLE `service_records` (
   `id` int NOT NULL AUTO_INCREMENT,
   `vehicle_id` int NOT NULL,
