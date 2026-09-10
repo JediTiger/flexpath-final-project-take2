@@ -5,25 +5,28 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserTest {
+class UserTests {
 
    User testUser;
 
    @Test
-   @DisplayName("Getting username")
+   @DisplayName("MODEL TEST: Getting username")
    void testGetUsername() {
       assertEquals("user 1", testUser.getPassword(), "Not user 1");
    }
 
    @Test
+   @DisplayName("MODEL TEST: Setting username")
    void setUsername() {
    }
 
    @Test
+   @DisplayName("MODEL TEST: Getting password")
    void getPassword() {
    }
 
    @Test
+   @DisplayName("MODEL TEST: Setting username")
    void setPassword() {
    }
 }
