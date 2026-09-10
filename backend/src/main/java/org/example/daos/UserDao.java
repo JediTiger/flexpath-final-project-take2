@@ -126,7 +126,7 @@ public class UserDao {
         try {
             String sql = "INSERT INTO roles (username, role) VALUES (?,?)";
             jdbcTemplate.update(sql, username, role);
-        } catch (DataAccessException e) {
+        } catch (DataAccessException err) {
         }
         return getRoles(username);
     }
