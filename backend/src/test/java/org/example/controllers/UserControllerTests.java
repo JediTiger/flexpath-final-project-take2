@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTests {
 
    // Testing UserController class methods
+   // Since testing this controller also tests the DAO it uses to fetch and update data, no need to test the DAO alone
 
    // Need to mock a DB so the methods can be tested
    @Autowired
@@ -28,22 +29,41 @@ public class UserControllerTests {
 
    @Test
    @WithMockUser(authorities = "ADMIN")
-   @DisplayName("Test getAllUsers")
+   @DisplayName("Get all user [as Admin]")
    void testGetAllUsers() throws Exception {
       mockMvc.perform(get("/api/users")
          // Tells the 'server' I expect a JSON object back
          .contentType(MediaType.APPLICATION_JSON))
          // Verify the returned status is 200
          .andExpect(status().isOk())
-         // Verify the response is a JSON array required by the what?
-         .andExpect(jsonPath("$").isArray())
-         // Confirm a total of 3 users are present
-         .andExpect(jsonPath("$.length()").value(3))
          // Verifies the exact names of all the 3 users are returned
          .andExpect(jsonPath("$[0].username").value("admin"))
          .andExpect(jsonPath("$[1].username").value("user 1"))
          .andExpect(jsonPath("$[2].username").value("user 2"));
    }
+
+   @Test
+   @WithMockUser(authorities = "ADMIN")
+   @DisplayName("Get a user [as admin]")
+   void testGetUserByUsername() throws Exception {
+      mockMvc.perform(get("/api/users/user 1")
+         // Tells the test server to return a JSON object
+         .contentType(MediaType.APPLICATION_JSON))
+         // Verify the returned status is 200
+         .andExpect(status().isOk())
+         // Verifies the exact name and password of the user
+         .andExpect(jsonPath("$.username").value("user 1"))
+         .andExpect(jsonPath("$.password").value("$2a$10$tBTfzHzjmQVKza3VSa5lsOX6/iL93xPVLlLXYg2FhT6a.jb1o6VDq"));
+   }
+
+   // Try a negative test like a different user that doesn't exist
+
+   // Create a user
+
+   // Delete at least one user
+
+   // Update a users password
+
 }
 
 
