@@ -71,6 +71,7 @@ public class UserControllerTests {
 
    // TODO: Update a users password
 
+   // Test should pass with the incorrect authority passed
    @Test
    @WithMockUser(authorities = "USER")
    @DisplayName("get all users [as user]")
